@@ -39,8 +39,7 @@ class Tablero:
             fila, columna = np.unravel_index(posicion, (8, 8))
             if tablero[fila, columna] == 0:
                 tablero[fila, columna] = 8
-                self.columna_caballoB = columna
-                self.fila_caballoB = fila
+                self.posicion_caballoB = (columna, fila)
                 break
 
         # Asignar el número 9 en una posición aleatoria para representar el caballo negro
@@ -52,4 +51,4 @@ class Tablero:
                 self.posicion_caballoN = (columna, fila)
                 break
 
-        return tablero, self.columna_caballoB, self.fila_caballoB, self.posicion_caballoN
+        return tablero,  self.posicion_caballoN, self.posicion_caballoB
