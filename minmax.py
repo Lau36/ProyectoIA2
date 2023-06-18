@@ -60,7 +60,6 @@ def generar_tablero(reset=False):
 
 
 def obtener_tablero(reset=False):
-    global tableroGame, posicionJugadorMax, posicionJugadorMin
     if reset or np.count_nonzero(tableroGame) == 0:
         tableroGame, posicionJugadorMax, posicionJugadorMin = generar_tablero(
             reset=True)
@@ -182,12 +181,3 @@ def minimax(tablero, jugador, profundidad):
                 nuevoTablero, oponente(jugador), profundidad - 1)
             mejorPuntuacion = max(mejorPuntaje, puntuacion)
         return mejorPuntuacion
-
-
-generar_tablero(reset=True)
-complejidad_juego('principiante')
-print(tableroGame)
-print("tablero min", obtener_tablero(reset=True))
-print("tablero max", obtener_tablero(reset=True))
-print("movimientosPosibles Max", movimientos_posibles(tableroGame, 'Max'))
-print("movimientosPosibles Min", movimientos_posibles(tableroGame, 'Min'))

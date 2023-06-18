@@ -79,9 +79,10 @@ class Ventana_Juego(tk.Toplevel):
     def reiniciar_programa(self):
         self.destroy()  # Close the current window
         minmax.generar_tablero(reset=True)
-        Ventana_Juego()  
-      
+        Ventana_Juego()
+
     def generar_tablero_level(self, reset=True):
+        global tableroGame, posicionJugadorMax, posicionJugadorMin
         tableroGame, posicionJugadorMax, posicionJugadorMin = minmax.obtener_tablero(reset=True)
         # Clear the canvas
         self.canvas.delete("all")
@@ -112,11 +113,15 @@ class Ventana_Juego(tk.Toplevel):
         # Actualizar las coordenadas de los caballos
         self.posicion_caballoB = posicionJugadorMax
         self.posicion_caballoN = posicionJugadorMin
-    
+
     def nivel(self, nivel):
         if nivel == "1":
 
             self.generar_tablero_level(reset=True)
+            print(tableroGame)
+            minmax.complejidad_juego('principiante')
+            print("movimientosPosibles Max",  minmax.movimientos_posibles( tableroGame, 'Max'))
+            print("movimientosPosibles Min",  minmax.movimientos_posibles( tableroGame, 'Min'))
 
         elif nivel == "2":
             pass
