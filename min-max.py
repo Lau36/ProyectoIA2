@@ -8,8 +8,30 @@ tableroGame = np.zeros((8, 8), dtype=int)
 jugadorGame = 'Max'
 posicionJugadorMax = []
 posicionJugadorMin = []
+# tableroGame = np.array([
+#     [0, 0, 0, 0, 0, 4, 0, 0],
+#     [0, 0, 1, 0, 0, 0, 9, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0],
+#     [0, 7, 0, 0, 3, 0, 0, 0],
+#     [0, 8, 0, 0, 0, 0, 0, 0],
+#     [0, 0, 0, 0, 6, 0, 0, 0],
+#     [0, 0, 5, 0, 0, 0, 2, 0],
+#     [0, 0, 0, 0, 0, 0, 0, 0]
+# ])
 
 # Funciones auxiliares -------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Función que define la complejidad del juego
+
+
+def complejidad_juego(nivelFront):
+    if nivelFront == 'principiante':
+        profundidadGame = 2
+    if nivelFront == 'amateur':
+        profundidadGame = 4
+    if nivelFront == 'experto':
+        profundidadGame = 6
+    return profundidadGame
 
 
 def generar_tablero():
@@ -59,6 +81,18 @@ def juego_terminado(tablero):
 def casilla_puntos(tablero, fila, columna):
     if tablero[fila][columna] == 1:
         return True
+    if tablero[fila][columna] == 2:
+        return True
+    if tablero[fila][columna] == 3:
+        return True
+    if tablero[fila][columna] == 4:
+        return True
+    if tablero[fila][columna] == 5:
+        return True
+    if tablero[fila][columna] == 6:
+        return True
+    if tablero[fila][columna] == 7:
+        return True
     else:
         return False
 
@@ -67,16 +101,15 @@ def casilla_puntos(tablero, fila, columna):
 
 def movimientos_posibles(tablero, jugador):
     jugadas_posibles = []
-    if jugador == 'Max':
-        for fila in range(8):
-            for columna in range(8):
-                # Pregunto si en esa fila y columna hay un punto
-                if casilla_puntos(tablero, fila, columna):
-                    # Verifica que el caballo del jugador pueda alcanzar la casilla
-                    if alcanzar_casilla(tablero, jugadorGame, fila, columna):
-                        jugada = (fila, columna)
-                        jugadas_posibles.append(jugada)
-        return jugadas_posibles
+    for fila in range(8):
+        for columna in range(8):
+            # Pregunto si en esa fila y columna hay un punto
+            if casilla_puntos(tablero, fila, columna):
+                # Verifica que el caballo del jugador pueda alcanzar la casilla
+                if alcanzar_casilla(tablero, jugador, fila, columna):
+                    jugada = (fila, columna)
+                    jugadas_posibles.append(jugada)
+    return jugadas_posibles
 
 # Verifica si el caballo puede alcanzar una posicion
 
@@ -105,7 +138,15 @@ def obtener_posicion_caballo(tablero, jugador):
                     return (i, j)
 
 
+def realizarJugada(tablero, jugada, jugador):
+    pass
+    # if casilla_puntos(tablero, jugada[0], jugada[1]):
+    #     puntaje = tablero[0][1] #aca tendria que sacarme que hay en esa posicion
+
+
 print("Tablero del juego", generar_tablero())
+print("Tablero del juego", tableroGame)
+print("movimientosPosibles", movimientos_posibles(tableroGame, 'Max'))
 
 # MiniMax --------------------------------------------------------------------------------------------------------------------------------------------
 
