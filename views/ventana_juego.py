@@ -70,46 +70,10 @@ class Ventana_Juego(tk.Toplevel):
         tablero = Tablero(self.canvas, self.cell_size, self.cells)
         tablero.crear_tablero()
 
-        # Bind events to the cells
-        for cell in self.cells:
-            self.canvas.tag_bind(cell, "<Button-1>", self.cell_clicked)
-
         # Boton reiniciar
         self.botonReinicio = tk.Button(self, image=self.btnReinicio_img, bg="white", bd=0, command=self.reiniciar_programa)
         self.botonReinicio.pack()
         self.botonReinicio.place(x=230, y=680)
-
-        # Variables para la posición de los caballos
-        self.columna_caballoB = None
-        self.fila_caballoB = None
-        self.posicion_caballoN = None
-
-    def cell_clicked(self, event):
-        clicked_cell = event.widget.find_closest(event.x, event.y)
-        cell_index = self.cells.index(clicked_cell[0])
-        row = cell_index // 8  # Obtener la fila de la celda
-        col = cell_index % 8  # Obtener la columna de la celda
-
-        # Mover los caballos a la posición seleccionada
-        self.move_horse(row, col)
-
-    def move_horse(self, row, col):
-        # Actualizar la posición del caballo blanco
-        self.canvas.delete("caballo_blanco")
-        x = col * self.cell_size + self.cell_size // 2
-        y = row * self.cell_size + self.cell_size // 2
-        self.canvas.create_image(x, y, image=self.canvas.image_caballoB, tags="caballo_blanco")
-
-        # Actualizar la posición del caballo negro
-        self.canvas.delete("caballo_negro")
-        x = col * self.cell_size + self.cell_size // 2
-        y = row * self.cell_size + self.cell_size // 2
-        self.canvas.create_image(x, y, image=self.canvas.image_caballoN, tags="caballo_negro")
-
-        # Actualizar las coordenadas de los caballos
-        self.columna_caballoB = col
-        self.fila_caballoB = row
-        self.posicion_caballoN = (col, row)
 
     def reiniciar_programa(self):
         self.destroy()  # Cierra la ventana actual

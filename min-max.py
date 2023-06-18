@@ -8,6 +8,8 @@ def generar_tablero():
         # Generar una lista de números del 1 al 7 (excluyendo el 8 y 9)
         numeros = list(range(1, 8))
 
+        imagenes_caballos = ["resources/images/caballo_blanco.png", "resources/images/caballo_negro.png"]
+
         # Asignar los números en posiciones aleatorias del tablero sin superposición
         for num in numeros:
             while True:
@@ -35,7 +37,7 @@ def generar_tablero():
                 posicion_caballoN = (columna, fila)
                 break
 
-        return tablero, posicion_caballoB, posicion_caballoN
+        return tablero, posicion_caballoB, posicion_caballoN, imagenes_caballos
 
 def obtener_movimientos_caballo(posicion_caballo):
         movimientos = []
