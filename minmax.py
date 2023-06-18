@@ -184,8 +184,10 @@ def minimax(tablero, jugador, profundidad):
         return mejorPuntuacion
 
 
-generar_tablero()
+generar_tablero(reset=True)
 complejidad_juego('principiante')
 print(tableroGame)
+print("tablero min", obtener_tablero(reset=True))
+print("tablero max", obtener_tablero(reset=True))
 print("movimientosPosibles Max", movimientos_posibles(tableroGame, 'Max'))
 print("movimientosPosibles Min", movimientos_posibles(tableroGame, 'Min'))
