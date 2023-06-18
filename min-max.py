@@ -3,9 +3,13 @@ from tablero import tablero
 import numpy as np
 import random
 
+# Variables globales --------------------------------------------------------------------------------------------------------------------------------------------------
 tableroGame = np.zeros((8, 8), dtype=int)
+jugadorGame = 'Max'
 posicionJugadorMax = []
 posicionJugadorMin = []
+
+# Funciones auxiliares -------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 def generar_tablero():
@@ -17,7 +21,7 @@ def generar_tablero():
             if tableroGame[fila, columna] == 0:
                 tableroGame[fila, columna] = num
                 break
-    # Asignar el número 8 en una posición aleatoria para representar el caballo blanco
+    # Asignar el número 8 en una posición aleatoria para representar el caballo blanco(IA)
     while True:
         posicion = np.random.randint(8*8)
         fila, columna = np.unravel_index(posicion, (8, 8))
@@ -27,7 +31,7 @@ def generar_tablero():
             fila_Max = fila
             break
 
-        # Asignar el número 9 en una posición aleatoria para representar el caballo negro
+        # Asignar el número 9 en una posición aleatoria para representar el caballo negro(Humano)
     while True:
         posicion = np.random.randint(8*8)
         fila, columna = np.unravel_index(posicion, (8, 8))
@@ -38,6 +42,7 @@ def generar_tablero():
     return tableroGame, columna_Max, fila_Max, posicionJugadorMin
 
 
+# WARNING Mejorar esta función
 def juego_terminado(tablero):
     terminado = False
     for fila in tablero:
@@ -48,17 +53,89 @@ def juego_terminado(tablero):
             else:
                 terminado = False
 
-
-def utilidad():
-    1
+# Calcula si en esa casilla hay un elemento punto
 
 
-# tableroGame = tablero(
-#     np.zeros((8, 8), dtype=int),
-#     []
-# )
-generar_tablero()
+def casilla_puntos(tablero, fila, columna):
+    if tablero[fila][columna] == 1:
+        return True
+    else:
+        return False
+
+# Calcula los movimientos posibles y los pone en una lista de jugadas posibles
+
+
+def movimientos_posibles(tablero, jugador):
+    jugadas_posibles = []
+    if jugador == 'Max':
+        for fila in range(8):
+            for columna in range(8):
+                # Pregunto si en esa fila y columna hay un punto
+                if casilla_puntos(tablero, fila, columna):
+                    # Verifica que el caballo del jugador pueda alcanzar la casilla
+                    if alcanzar_casilla(tablero, jugadorGame, fila, columna):
+                        jugada = (fila, columna)
+                        jugadas_posibles.append(jugada)
+        return jugadas_posibles
+
+# Verifica si el caballo puede alcanzar una posicion
+
+
+def alcanzar_casilla(tablero, jugador, fila, columna):
+    # obtiene la posicion actual del caballo del jugador
+    posicionActual = obtener_posicion_caballo(tablero, jugador)
+    distanciaFila = abs(fila - posicionActual[0])
+    distanciaColumna = abs(columna - posicionActual[1])
+    if (distanciaFila == 2 and distanciaColumna == 1) or (distanciaFila == 1 and distanciaColumna == 2):
+        return True
+    else:
+        return False
+
+# Funcion que obtiene la posicion del caballo
+
+
+def obtener_posicion_caballo(tablero, jugador):
+    for i in range(len(tablero)):
+        for j in range(len(tablero)):
+            if jugador == 'Max':
+                if tablero[i][j] == 8:
+                    return (i, j)
+            if jugador == 'Min':
+                if tablero[i][j] == 9:
+                    return (i, j)
+
+
 print("Tablero del juego", generar_tablero())
+
+# MiniMax --------------------------------------------------------------------------------------------------------------------------------------------
+
+
+def minimax(tablero, jugador, profundidad):
+    if juego_terminado():
+        return 1  # aqui deberia de retornar la utilidad final
+
+    if jugador == 'Max':
+        # Esto es un infinito con numero negativos
+        mejorPuntaje = float("-inf")
+        for jugada in movimientos_posibles():
+            nuevoTablero = realizarJugada(tablero, jugada, jugador)
+            puntuacion = minimax(
+                nuevoTablero, oponente(jugador), profundidad - 1)
+            mejorPuntuacion = max(mejorPuntaje, puntuacion)
+        return mejorPuntuacion
+
+# Aqui sabemos a quien le toca el turno si el jugador ya es max, pasaria a ser min
+
+
+def oponente(jugador):
+    if jugador == 'Max':
+        jugador = 'Min'
+    if jugador == 'Min':
+        jugador = 'Min'
+
+# abria que implementar algo en donde se pueda comunicar el front con los algoritmos para que pueda mostrar del humano, el estado actual (coordenadas) para saber que movimientos podria hacer
+
+
 # print("terminado?", juego_terminado(tableroGame))
 
 # def minimax(matriz_juego):
