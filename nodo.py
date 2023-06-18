@@ -1,6 +1,9 @@
+from tablero import tablero
+
+
 class Nodo:
-    def __init__(self, matriz, estadoGanar, tipo, utilidad, puntosMaquina, puntosJugador, alfa, beta, profundidad, nodosVisitados):
-        self.matriz = matriz,
+    def __init__(self, tablero, estadoGanar, tipo, utilidad, puntosMaquina, puntosJugador, alfa, beta, profundidad, nodosVisitados):
+        tablero = tablero,
         self.estadoGanar = estadoGanar,
         self.tipo = tipo,
         self.utilidad = utilidad,

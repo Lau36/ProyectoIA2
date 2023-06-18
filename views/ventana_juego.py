@@ -1,6 +1,7 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from views.tablero import Tablero
+import minmax
 
 class Ventana_Juego(tk.Toplevel):
     def __init__(self):
@@ -76,49 +77,48 @@ class Ventana_Juego(tk.Toplevel):
         self.botonReinicio.place(x=230, y=680)
 
     def reiniciar_programa(self):
-        self.destroy()  # Cierra la ventana actual
-        Ventana_Juego()  # Abre una nueva ventana
+        self.destroy()  # Close the current window
+        minmax.generar_tablero(reset=True)
+        Ventana_Juego()  
+      
+    def generar_tablero_level(self, reset=True):
+        tableroGame, posicionJugadorMax, posicionJugadorMin = minmax.obtener_tablero(reset=True)
+        # Clear the canvas
+        self.canvas.delete("all")
 
+        # Create a new chessboard using the Tablero class
+        tablero_obj = Tablero(self.canvas, self.cell_size, self.cells)
+        tablero_obj.crear_tablero()
+
+        # Update the game board with the generated numbers
+        for i in range(8):
+            for j in range(8):
+                x = j * self.cell_size + self.cell_size // 2
+                y = i * self.cell_size + self.cell_size // 2
+                numero = tableroGame[i][j]
+                if numero == 8:
+                    img_caballoB = Image.open("resources/images/caballo_blanco.png")
+                    img_caballoB = img_caballoB.resize((40, 40), Image.ANTIALIAS)
+                    self.canvas.image_caballoB = ImageTk.PhotoImage(img_caballoB)
+                    self.canvas.create_image(x, y, image=self.canvas.image_caballoB, tags="caballo_blanco")
+                elif numero == 9:
+                    img_caballoN = Image.open("resources/images/caballo_negro.png")
+                    img_caballoN = img_caballoN.resize((40, 40), Image.ANTIALIAS)
+                    self.canvas.image_caballoN = ImageTk.PhotoImage(img_caballoN)
+                    self.canvas.create_image(x, y, image=self.canvas.image_caballoN, tags="caballo_negro")
+                elif numero != 0:
+                    self.canvas.create_text(x, y, text=str(numero), font=("Arial", 12))
+
+        # Actualizar las coordenadas de los caballos
+        self.posicion_caballoB = posicionJugadorMax
+        self.posicion_caballoN = posicionJugadorMin
+    
     def nivel(self, nivel):
         if nivel == "1":
-            # Generate the game board and horse positions
-            tablero, posicion_caballoN, posicion_caballoB  = Tablero.generar_tablero(self.canvas)
 
-            # Clear the canvas
-            self.canvas.delete("all")
+            self.generar_tablero_level(reset=True)
 
-            # Create a new chessboard using the Tablero class
-            tablero_obj = Tablero(self.canvas, self.cell_size, self.cells)
-            tablero_obj.crear_tablero()
-
-            # Update the game board with the generated numbers
-            for i in range(8):
-                for j in range(8):
-                    x = j * self.cell_size + self.cell_size // 2
-                    y = i * self.cell_size + self.cell_size // 2
-                    numero = tablero[i][j]
-                    if numero == 8:
-                        img_caballoB = Image.open("resources/images/caballo_blanco.png")
-                        img_caballoB = img_caballoB.resize((40, 40), Image.ANTIALIAS)
-                        self.canvas.image_caballoB = ImageTk.PhotoImage(img_caballoB)
-                        self.canvas.create_image(x, y, image=self.canvas.image_caballoB, tags="caballo_blanco")
-                    elif numero == 9:
-                        img_caballoN = Image.open("resources/images/caballo_negro.png")
-                        img_caballoN = img_caballoN.resize((40, 40), Image.ANTIALIAS)
-                        self.canvas.image_caballoN = ImageTk.PhotoImage(img_caballoN)
-                        self.canvas.create_image(x, y, image=self.canvas.image_caballoN, tags="caballo_negro")
-                    elif numero != 0:
-                        self.canvas.create_text(x, y, text=str(numero), font=("Arial", 12))
-
-             # Actualizar las coordenadas de los caballos
-            self.posicion_caballoB = posicion_caballoB
-            self.posicion_caballoN = posicion_caballoN
-
-            # Do something with the horse positions
-            print(f"Caballo negro: columna {posicion_caballoB[0]}, fila {posicion_caballoB[1]}")
-            print(f"Caballo negro: columna {posicion_caballoN[0]}, fila {posicion_caballoN[1]}")
         elif nivel == "2":
             pass
         elif nivel == "3":
             pass
-
