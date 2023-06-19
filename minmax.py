@@ -246,10 +246,47 @@ def verificar_primer_movimiento_max(tablero, profundidad, jugador):
     return mejor_movimiento
 
 
+# como para ir simulando lo
+if __name__ == "__main__":
+    profundidad = complejidad_juego('principiante')
+    jugador = 'Min'
+
+    while True:
+        print("Tablero actual:")
+        print(tableroGame)
+        print("Turno del jugador 'Min'. Ingresa las coordenadas de la jugada (fila y columna separadas por espacios):")
+        fila, columna = map(int, input().split())
+        jugada_min = (fila, columna)
+
+        if alcanzar_casilla(tableroGame, jugador, fila, columna):
+            nuevo_tablero = realizarJugada(tableroGame, jugada_min, jugador)
+            print("Jugada del jugador 'Min':", jugada_min)
+            print("Nuevo tablero:")
+            print(nuevo_tablero)
+
+            if juego_terminado(nuevo_tablero):
+                print("El juego ha terminado. ¡Ganó el jugador 'Min'!")
+                break
+
+            mejor_movimiento_max = verificar_primer_movimiento_max(
+                nuevo_tablero, profundidad, 'Max')
+            nuevo_tablero = realizarJugada(
+                nuevo_tablero, mejor_movimiento_max, 'Max')
+            print("Jugada del jugador 'Max':", mejor_movimiento_max)
+            print("Nuevo tablero:")
+            print(nuevo_tablero)
+
+            if juego_terminado(nuevo_tablero):
+                print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
+                break
+
+            tableroGame = nuevo_tablero
+        else:
+            print("La jugada ingresada no es válida. Inténtalo de nuevo.")
+
 print(tableroGame)
 # aiuda esto no está dando lo que necesito :(
 print("jugada", verificar_primer_movimiento_max(tableroGame, 4, jugadorGame))
-
 # print("puntaje", sumar_puntaje('Max', 5))
 # print("como sigue el tablero", tableroGame)
 # print("El pruntaje en max", puntajeMax)
