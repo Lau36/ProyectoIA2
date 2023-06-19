@@ -1,8 +1,6 @@
 # from nodo import Nodo
 # from tablero import tablero
 import numpy as np
-import random
-import math
 
 # Variables globales --------------------------------------------------------------------------------------------------------------------------------------------------
 # tableroGame = np.zeros((8, 8), dtype=int)
@@ -154,17 +152,22 @@ def obtener_posicion_caballo(tablero, jugador):
 
 
 def realizarJugada(tablero, jugada, jugador):
+    global puntajeMin, puntajeMax
+
     new = tablero.copy()
+    fila, columna = jugada[0], jugada[1]  # Obtener fila y columna de la jugada
+
     # Verifica si en esa casilla hay un punto
-    if casilla_puntos(tablero, jugada[0], jugada[1]):
-        # aca tendria que sacarme que hay en esa posicion
-        puntaje = tablero[0][1]
-        print("el puntaje que lleva es", sumar_puntaje(jugador, puntaje))
-        # sumar_puntaje(jugador, puntaje)
+    if casilla_puntos(tablero, fila, columna):
+        puntaje = tablero[fila][columna]  # Corrección aquí
+        sumar_puntaje(jugador, puntaje)
+        print("El puntaje que lleva es:", sumar_puntaje(jugador, puntaje))
+
     if jugador == 'Max':
-        new[jugada[0], jugada[1]] = 8
+        new[fila, columna] = 8
     if jugador == 'Min':
-        new[jugada[0], jugada[1]] = 9
+        new[fila, columna] = 9
+
     return new
 
 
