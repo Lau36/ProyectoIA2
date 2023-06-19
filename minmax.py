@@ -6,6 +6,8 @@ import random
 # Variables globales --------------------------------------------------------------------------------------------------------------------------------------------------
 tableroGame = np.zeros((8, 8), dtype=int)
 jugadorGame = 'Max'
+puntajeMin = 0
+puntajeMax = 0
 posicionJugadorMax = []
 posicionJugadorMin = []
 
@@ -105,9 +107,6 @@ def movimientos_posibles(tablero, jugador):
     jugadas_posibles = []
     for fila in range(8):
         for columna in range(8):
-            # Pregunto si en esa fila y columna hay un punto
-            # if casilla_puntos(tablero, fila, columna):
-            # Verifica que el caballo del jugador pueda alcanzar la casilla
             if alcanzar_casilla(tablero, jugador, fila, columna):
                 jugada = (fila, columna)
                 jugadas_posibles.append(jugada)
@@ -142,9 +141,26 @@ def obtener_posicion_caballo(tablero, jugador):
 
 
 def realizarJugada(tablero, jugada, jugador):
-    # if casilla_puntos(tablero, jugada[0], jugada[1]):
-    #     puntaje = tablero[0][1] #aca tendria que sacarme que hay en esa posicion
-    pass
+    nuevoTablero = tablero.copy()
+    # Verifica si en esa casilla hay un punto
+    if casilla_puntos(tablero, jugada[0], jugada[1]):
+        # aca tendria que sacarme que hay en esa posicion
+        puntaje = tablero[0][1]
+        sumar_puntaje(jugador, puntaje)
+    if jugador == 'Max':
+        nuevoTablero[jugada[0], jugada[1]] == 8
+    if jugador == 'Min':
+        nuevoTablero[jugada[0], jugada[1]] == 9
+    return nuevoTablero
+
+
+def sumar_puntaje(jugador, puntuacion):
+    if jugador == 'Max':
+        puntajeMax += puntuacion
+        return puntajeMax
+    if jugador == 'Min':
+        puntajeMin += puntuacion
+        return puntajeMin
 
 # Aqui sabemos a quien le toca el turno si el jugador ya es max, pasaria a ser min
 
@@ -164,20 +180,32 @@ def minimax(tablero, jugador, profundidad):
 
     if jugador == 'Max':
         # Esto es un infinito con numero negativos
-        mejorPuntaje = float("-inf")
+        mejorValor = float("-inf")
         for jugada in movimientos_posibles(tablero, jugador):
             nuevoTablero = realizarJugada(tablero, jugada, jugador)
-            puntuacion = minimax(
+            valor = minimax(
+                nuevoTablero, oponente(jugador), profundidad - 1)
+            mejorvalor = max(mejorValor, valor)
+            alfa = max(alfa, mejorValor)
+            if beta <= alfa:
+                break  # Poda alfa-beta
+        return mejorvalor
+
+    else:
+        # Esto es un infinito con numero negativos
+        mejorValor = float("inf")
+        for jugada in movimientos_posibles(tablero, jugador):
+            nuevoTablero = realizarJugada(tablero, jugada, jugador)
+            valor = minimax(
                 nuevoTablero, oponente(jugador), profundidad - 1)
             mejorPuntuacion = max(mejorPuntaje, puntuacion)
         return mejorPuntuacion
 
-    else:
-        # Esto es un infinito con numero negativos
-        mejorPuntaje = float("inf")
-        for jugada in movimientos_posibles(tablero, jugador):
-            nuevoTablero = realizarJugada(tablero, jugada, jugador)
-            puntuacion = minimax(
-                nuevoTablero, oponente(jugador), profundidad - 1)
-            mejorPuntuacion = max(mejorPuntaje, puntuacion)
-        return mejorPuntuacion
+
+generar_tablero(reset=True)
+complejidad_juego('principiante')
+print(tableroGame)
+print("tablero min", obtener_tablero(reset=True))
+print("tablero max", obtener_tablero(reset=True))
+print("movimientosPosibles Max", movimientos_posibles(tableroGame, 'Max'))
+print("movimientosPosibles Min", movimientos_posibles(tableroGame, 'Min'))
