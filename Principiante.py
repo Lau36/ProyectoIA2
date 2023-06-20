@@ -14,6 +14,12 @@ class Principiante:
         self.canvas = tk.Canvas(self.window, width=400, height=400)
         self.canvas.pack()
 
+        self.score_min_label = tk.Label(self.window, text="Puntuación Min: ")
+        self.score_min_label.pack()
+
+        self.score_max_label = tk.Label(self.window, text="Puntuación Max: ")
+        self.score_max_label.pack()
+
         self.canvas.bind("<Button-1>", self.on_click)
 
         self.update_board()
@@ -21,6 +27,10 @@ class Principiante:
         self.window.after(1000, self.make_initial_move)  # Esperar 2 segundos antes de hacer el primer movimiento
 
         self.window.mainloop()
+
+    def update_scores(self):
+        self.score_min_label.config(text="Puntuación Min: " + str(self.juego.puntajeMin))
+        self.score_max_label.config(text="Puntuación Max: " + str(self.juego.puntajeMax))
 
     def update_board(self):
         tablero, _, _ = self.juego.obtener_tablero(reset=False)
@@ -121,6 +131,8 @@ class Principiante:
         for fila in nuevo_tablero:
             print(fila)
         print()
+
+        self.update_scores()  # Actualizar puntuaciones en la interfaz
 
         self.update_board()
 
