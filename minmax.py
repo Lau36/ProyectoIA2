@@ -1,6 +1,8 @@
 # from nodo import Nodo
 # from tablero import tablero
 import numpy as np
+import random
+import math
 
 # Variables globales --------------------------------------------------------------------------------------------------------------------------------------------------
 # tableroGame = np.zeros((8, 8), dtype=int)
@@ -71,7 +73,6 @@ def generar_tablero(reset=False):
 
 
 def obtener_tablero(reset=False):
-    global tableroGame, posicionJugadorMax, posicionJugadorMin
     if reset or np.count_nonzero(tableroGame) == 0:
         tableroGame, posicionJugadorMax, posicionJugadorMin = generar_tablero(
             reset=True)
@@ -152,22 +153,17 @@ def obtener_posicion_caballo(tablero, jugador):
 
 
 def realizarJugada(tablero, jugada, jugador):
-    global puntajeMin, puntajeMax
-
     new = tablero.copy()
-    fila, columna = jugada[0], jugada[1]  # Obtener fila y columna de la jugada
-
     # Verifica si en esa casilla hay un punto
-    if casilla_puntos(tablero, fila, columna):
-        puntaje = tablero[fila][columna]  # Corrección aquí
-        sumar_puntaje(jugador, puntaje)
-        print("El puntaje que lleva es:", sumar_puntaje(jugador, puntaje))
-
+    if casilla_puntos(tablero, jugada[0], jugada[1]):
+        # aca tendria que sacarme que hay en esa posicion
+        puntaje = tablero[0][1]
+        print("el puntaje que lleva es", sumar_puntaje(jugador, puntaje))
+        # sumar_puntaje(jugador, puntaje)
     if jugador == 'Max':
-        new[fila, columna] = 8
+        new[jugada[0], jugada[1]] = 8
     if jugador == 'Min':
-        new[fila, columna] = 9
-
+        new[jugada[0], jugada[1]] = 9
     return new
 
 
@@ -249,47 +245,10 @@ def verificar_primer_movimiento_max(tablero, profundidad, jugador):
     return mejor_movimiento
 
 
-# como para ir simulando lo
-if __name__ == "__main__":
-    profundidad = complejidad_juego('principiante')
-    jugador = 'Min'
+# print(tableroGame)
+# # aiuda esto no está dando lo que necesito :(
+# print("jugada", verificar_primer_movimiento_max(tableroGame, 4, jugadorGame))
 
-    while True:
-        print("Tablero actual:")
-        print(tableroGame)
-        print("Turno del jugador 'Min'. Ingresa las coordenadas de la jugada (fila y columna separadas por espacios):")
-        fila, columna = map(int, input().split())
-        jugada_min = (fila, columna)
-
-        if alcanzar_casilla(tableroGame, jugador, fila, columna):
-            nuevo_tablero = realizarJugada(tableroGame, jugada_min, jugador)
-            print("Jugada del jugador 'Min':", jugada_min)
-            print("Nuevo tablero:")
-            print(nuevo_tablero)
-
-            if juego_terminado(nuevo_tablero):
-                print("El juego ha terminado. ¡Ganó el jugador 'Min'!")
-                break
-
-            mejor_movimiento_max = verificar_primer_movimiento_max(
-                nuevo_tablero, profundidad, 'Max')
-            nuevo_tablero = realizarJugada(
-                nuevo_tablero, mejor_movimiento_max, 'Max')
-            print("Jugada del jugador 'Max':", mejor_movimiento_max)
-            print("Nuevo tablero:")
-            print(nuevo_tablero)
-
-            if juego_terminado(nuevo_tablero):
-                print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
-                break
-
-            tableroGame = nuevo_tablero
-        else:
-            print("La jugada ingresada no es válida. Inténtalo de nuevo.")
-
-print(tableroGame)
-# aiuda esto no está dando lo que necesito :(
-print("jugada", verificar_primer_movimiento_max(tableroGame, 4, jugadorGame))
 # print("puntaje", sumar_puntaje('Max', 5))
 # print("como sigue el tablero", tableroGame)
 # print("El pruntaje en max", puntajeMax)
