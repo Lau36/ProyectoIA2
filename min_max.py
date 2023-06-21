@@ -3,7 +3,7 @@ from nodo import Nodo
 
 def minimax(nodo, juego, alfa, beta):
     if (nodo, 'profundidad') and (nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero)):
-        return nodo.obtener_utilidad()
+        return Juego.evaluar_estado()
 
     if (nodo.jugador == 'Max'):
         mejorValor = float("-inf")

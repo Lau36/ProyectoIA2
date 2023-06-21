@@ -1,4 +1,5 @@
 import numpy as np
+from nodo import Nodo
 
 class Juego:
     def __init__(self):
@@ -112,7 +113,7 @@ class Juego:
         if self.casilla_puntos(tablero, fila, columna):
             puntaje = tablero[fila][columna]
             self.sumar_puntaje(jugador, puntaje)
-            print("El puntaje que lleva es:", self.sumar_puntaje(jugador, puntaje))
+            print("El puntaje que lleva es:", self.obtener_puntaje(jugador))  # Mostrar el puntaje actualizado
         if jugador == 'Max':
             new[fila, columna] = 8
         elif jugador == 'Min':
@@ -122,9 +123,13 @@ class Juego:
     def sumar_puntaje(self, jugador, puntuacion):
         if jugador == 'Max':
             self.puntajeMax += puntuacion
-            return self.puntajeMax
         elif jugador == 'Min':
             self.puntajeMin += puntuacion
+
+    def obtener_puntaje(self, jugador):
+        if jugador == 'Max':
+            return self.puntajeMax
+        elif jugador == 'Min':
             return self.puntajeMin
 
     def oponente(self, jugador):
@@ -137,27 +142,12 @@ class Juego:
     def evaluar_estado(self):
         utilidad = self.puntajeMax - self.puntajeMin
         return utilidad
-
-class Nodo:
-    def __init__(self, tablero, jugador, profundidad):
-        self.tablero = tablero
-        self.jugador = jugador
-        self.profundidad = profundidad
-
-    def obtener_utilidad(self):
-        # Implementa aquí la lógica para obtener la utilidad del nodo
-        
-        utilidad = 0
-        return utilidad
-
-from juego import Juego
-from nodo import Nodo
-
+    
 def minimax(nodo, juego, alfa, beta):
-    if nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero):
-        return nodo.obtener_utilidad()
+    if (nodo, 'profundidad') and (nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero)):
+        return juego.evaluar_estado()
 
-    if nodo.jugador == 'Max':
+    if (nodo.jugador == 'Max'):
         mejorValor = float("-inf")
         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
         for jugada in movimientos:
