@@ -7,7 +7,7 @@ El juego termina cuando no queden más casillas con puntos. A continuación se m
 estado inicial del juego. Las posiciones iniciales de los caballos y de las siete casillas con puntos
 son aleatorias.
 
-![Nuestro tablero de la app](https://ibb.co/GkWmSj0)
+![Nuestro tablero de la app](https://postimg.cc/njYXFh3Q)
 
 ## Aclaraciones
 Smart horses presenta tres niveles de dificultad (principiante, amateur, y experto) que el
