@@ -113,7 +113,7 @@ class Juego:
         if self.casilla_puntos(tablero, fila, columna):
             puntaje = tablero[fila][columna]
             self.sumar_puntaje(jugador, puntaje)
-            print("El puntaje que lleva es:", self.obtener_puntaje(jugador))  # Mostrar el puntaje actualizado
+            # print("El puntaje que lleva es:", self.obtener_puntaje(jugador))  # Mostrar el puntaje actualizado
         if jugador == 'Max':
             new[fila, columna] = 8
         elif jugador == 'Min':
@@ -138,14 +138,21 @@ class Juego:
         else:
             return 'Max'
         
+    def utilidad_puntaje(self, profundidad):
+        puntaje_utilidad = self.puntajeMax - self.puntajeMin
+        if profundidad <= 6:
+            puntaje_utilidad *= (7 - profundidad)  # Multiplicar el puntaje por un factor según la profundidad
+        return puntaje_utilidad
+        
     #mejorar utilidad multiplicar puntaje si es cercano a las primeras jugadas
-    def evaluar_estado(self):
-        utilidad = self.puntajeMax - self.puntajeMin
+    def evaluar_estado(self, profundidad):
+        utilidad = self.puntajeMax - self.puntajeMin + self.utilidad_puntaje(profundidad)
         return utilidad
     
 def minimax(nodo, juego, alfa, beta):
     if (nodo, 'profundidad') and (nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero)):
-        return juego.evaluar_estado()
+        print("esta es la utilidad final:",juego.evaluar_estado(nodo.profundidad) )
+        return juego.evaluar_estado(nodo.profundidad)
 
     if (nodo.jugador == 'Max'):
         mejorValor = float("-inf")
@@ -192,17 +199,3 @@ def verificar_primer_movimiento_max(tablero, profundidad, jugador):
             mejor_movimiento = movimiento
 
     return mejor_movimiento
-
-# # Instancia clase Juego
-# juego = Juego()
-# # LLamar a los métodos de la clase
-# tablero, posicionJugadorMax, posicionJugadorMin = juego.obtener_tablero()
-# jugadas_posiblesMax = juego.movimientos_posibles(tablero, 'Max')
-# jugadas_posiblesMin = juego.movimientos_posibles(tablero, 'Min')
-# obtenerTablero = juego.obtener_tablero(reset=True)
-# print(tablero)
-# print(obtenerTablero)
-# print(posicionJugadorMax)
-# print(posicionJugadorMin)
-# print(jugadas_posiblesMax)
-# print(jugadas_posiblesMin)
