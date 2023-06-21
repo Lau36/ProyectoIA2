@@ -42,7 +42,7 @@ class Ventana_Juego(tk.Toplevel):
         # Nivel de dificultad
         self.difficultLabel = tk.Label(self, text="Escoge la dificultad del juego ")
         self.difficultLabel.pack()
-        self.difficultLabel.config(font=('Times New Roman', 15), bg="black")
+        self.difficultLabel.config(font=('Times New Roman', 15), bg="white", fg="black")
         self.difficultLabel.place(x=190, y=160)
 
         # Botones de dificultad
