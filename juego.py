@@ -168,12 +168,13 @@ def minimax(nodo, juego, alfa, beta):
         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
         for jugada in movimientos:
             nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
+            nodo.tablero = nuevoTablero  # Update the board state
             nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
             valor = minimax(nuevoNodo, juego, alfa, beta)
             mejorValor = max(mejorValor, valor)
             alfa = max(alfa, mejorValor)
             if beta <= alfa:
-                break  # Poda alfa-beta
+                break  # Alpha-beta pruning
         return mejorValor
 
     else:
@@ -181,12 +182,13 @@ def minimax(nodo, juego, alfa, beta):
         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
         for jugada in movimientos:
             nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
+            nodo.tablero = nuevoTablero  # Update the board state
             nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
             valor = minimax(nuevoNodo, juego, alfa, beta)
             mejorValor = min(mejorValor, valor)
             beta = min(beta, mejorValor)
             if beta <= alfa:
-                break  # Poda alfa-beta
+                break  # Alpha-beta pruning
         return mejorValor
 
 def verificar_primer_movimiento_max(tablero, profundidad, jugador):

@@ -5,11 +5,11 @@ from juego import Juego
 from juego import verificar_primer_movimiento_max
 
 
-class Principiante(tk.Toplevel):
+class Amateur(tk.Toplevel):
     def __init__(self):
         super().__init__()
         self.juego = Juego()
-        self.profundidad = self.juego.complejidad_juego('principiante')
+        self.profundidad = self.juego.complejidad_juego('amateur')
         self.jugador = 'Max'
 
         self.canvas = tk.Canvas(self, width=400, height=400)
