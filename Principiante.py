@@ -128,14 +128,14 @@ class Principiante(tk.Toplevel):
                         messagebox.showinfo(
                             "Juego terminado", "¡Es un empate!")
                         # print("recorrido de max", self.juego.recorridoMax)
-                        self.window.quit()
+                        self.quit()
 
                     elif self.juego.puntajeMin > self.juego.puntajeMax:
                         print("El juego ha terminado. ¡Le ganaste a la IA!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Le ganaste a la IA!")
                         # print("recorrido de max", self.juego.recorridoMax)
-                        self.window.quit()
+                        self.quit()
 
                     elif self.juego.puntajeMin < self.juego.puntajeMax:
                         print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
@@ -143,7 +143,7 @@ class Principiante(tk.Toplevel):
                                             "¡Ganó la IA!")
                         # print("recorrido de max", self.juego.recorridoMax)
 
-                        self.window.quit()
+                        self.quit()
 
                 self.juego.tableroGame = nuevo_tablero
 
@@ -166,14 +166,14 @@ class Principiante(tk.Toplevel):
                         messagebox.showinfo("Juego terminado",
                                             "¡Ganó la IA!")
                         # print("recorrido de max", self.juego.recorridoMax)
-                        self.window.quit()
+                        self.quit()
 
                     elif self.juego.puntajeMin > self.juego.puntajeMax:
                         print("El juego ha terminado. ¡Le ganaste a la IA!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Le ganaste a la IA!")
                         # print("recorrido de max", self.juego.recorridoMax)
-                        self.window.quit()
+                        self.quit()
 
                     elif self.juego.puntajeMin == self.juego.puntajeMax:
                         print("El juego ha terminado. ¡Es un empate!")
@@ -181,7 +181,7 @@ class Principiante(tk.Toplevel):
                             "Juego terminado", "¡Es un empate!")
                         # print("recorrido de max", self.juego.recorridoMax)
 
-                        self.window.quit()
+                        self.quit()
 
                 self.juego.tableroGame = nuevo_tablero
 
@@ -234,7 +234,7 @@ class Principiante(tk.Toplevel):
                                         "¡Ganó la IA!")
                     print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
                     # print("recorrido de max", self.juego.recorridoMax)
-                    self.window.quit()
+                    self.quit()
 
             self.juego.tableroGame = nuevo_tablero
 
@@ -264,6 +264,6 @@ class Principiante(tk.Toplevel):
                     messagebox.showinfo("Juego terminado",
                                         "¡Ganó el jugador 'Max'!")
                     # print("recorrido de max", self.juego.recorridoMax)
-                    self.window.quit()
+                    self.quit()
             else:
                 self.make_move()

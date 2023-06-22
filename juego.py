@@ -1,5 +1,6 @@
 import numpy as np
 from nodo import Nodo
+import copy
 
 class Juego:
     def __init__(self):
