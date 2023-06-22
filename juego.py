@@ -205,7 +205,7 @@ class Juego:
         else:
             utilidadDistancia = puntos_disponibles
 
-        if puntos_disponibles == 0 and puntaje_max == 0:
+        if puntos_disponibles > 0 and (puntaje_max == 0 or puntaje_max != 28):
             return -float('inf')  # No hay puntos y 'Max' no ha recolectado ninguno
 
         return puntaje_max - puntaje_min + utilidadProfundidad + utilidadDistancia
