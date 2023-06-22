@@ -3,7 +3,7 @@ from nodo import Nodo
 
 def minimax(nodo, juego, alfa, beta):
     if (nodo, 'profundidad') and (nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero)):
-        return Juego.evaluar_estado()
+        return juego.evaluar_estado()
 
     if (nodo.jugador == 'Max'):
         mejorValor = float("-inf")
@@ -92,9 +92,6 @@ if __name__ == "__main__":
 
         # Cambiar el turno del jugador
         jugador = 'Min' if jugador == 'Max' else 'Max'
-
-    print(juego.tableroGame)
-    print("jugada", verificar_primer_movimiento_max(juego.tableroGame, 4, jugador))
 
 
 if __name__ == "__main__":

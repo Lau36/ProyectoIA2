@@ -113,7 +113,6 @@ class Juego:
         if self.casilla_puntos(tablero, fila, columna):
             puntaje = tablero[fila][columna]
             self.sumar_puntaje(jugador, puntaje)
-            # print("El puntaje que lleva es:", self.obtener_puntaje(jugador))  # Mostrar el puntaje actualizado
         if jugador == 'Max':
             new[fila, columna] = 8
         elif jugador == 'Min':
@@ -128,8 +127,10 @@ class Juego:
 
     def obtener_puntaje(self, jugador):
         if jugador == 'Max':
+            print("FUN OBT puntaje max",self.puntajeMax)
             return self.puntajeMax
         elif jugador == 'Min':
+            print("FUN OBT puntaje min",self.puntajeMin)
             return self.puntajeMin
 
     def oponente(self, jugador):
@@ -138,28 +139,34 @@ class Juego:
         else:
             return 'Max'
         
-    def utilidad_puntaje(self, profundidad):
-        puntaje_utilidad = self.puntajeMax - self.puntajeMin
-        if profundidad <= 6:
-            puntaje_utilidad *= (7 - profundidad)  # Multiplicar el puntaje por un factor según la profundidad
-        return puntaje_utilidad
-        
     #mejorar utilidad multiplicar puntaje si es cercano a las primeras jugadas
-    def evaluar_estado(self, profundidad):
-        utilidad = self.puntajeMax - self.puntajeMin + self.utilidad_puntaje(profundidad)
-        return utilidad
+    def evaluar_estado(self):
+        puntaje_max = self.obtener_puntaje('Max')
+        puntaje_min = self.obtener_puntaje('Min')
+        puntos_disponibles = 0
+        
+        for fila in self.tableroGame:
+            for numero in fila:
+                if numero in range(1, 8):
+                    puntos_disponibles += 1
+        
+        if puntaje_max == 0 and puntaje_min == 0:
+            return 0  # Ambos jugadores tienen puntaje 0, se considera empate
+        
+        if puntaje_max == puntos_disponibles:
+            return float('inf')  # 'Max' ha recolectado todos los puntos
+    
+        return puntaje_max - puntaje_min
     
 def minimax(nodo, juego, alfa, beta):
-    if (nodo, 'profundidad') and (nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero)):
-        print("esta es la utilidad final:",juego.evaluar_estado(nodo.profundidad) )
-        return juego.evaluar_estado(nodo.profundidad)
+    if nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero):
+        return juego.evaluar_estado()
 
-    if (nodo.jugador == 'Max'):
+    if nodo.jugador == 'Max':
         mejorValor = float("-inf")
         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
         for jugada in movimientos:
-            nuevoTablero = juego.realizarJugada(
-                nodo.tablero, jugada, nodo.jugador)
+            nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
             nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
             valor = minimax(nuevoNodo, juego, alfa, beta)
             mejorValor = max(mejorValor, valor)
@@ -172,8 +179,7 @@ def minimax(nodo, juego, alfa, beta):
         mejorValor = float("inf")
         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
         for jugada in movimientos:
-            nuevoTablero = juego.realizarJugada(
-                nodo.tablero, jugada, nodo.jugador)
+            nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
             nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
             valor = minimax(nuevoNodo, juego, alfa, beta)
             mejorValor = min(mejorValor, valor)
