@@ -211,37 +211,41 @@ class Juego:
 
         return puntaje_max - puntaje_min + utilidadProfundidad + utilidadDistancia
 
-def minimax(nodo, juego, alfa, beta):
-    if nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero):
-        return juego.evaluar_estado(nodo.profundidad)
 
-    if nodo.jugador == 'Max':
-        mejorValor = float("-inf")
-        movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
-        for jugada in movimientos:
-            nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
-            nodo.tablero = nuevoTablero  # Actualizar el estado del tablero
-            nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
-            valor = minimax(nuevoNodo, juego, alfa, beta)
-            mejorValor = max(mejorValor, valor)
-            alfa = max(alfa, mejorValor)
-            if beta <= alfa:
-                break  # Poda alfa-beta
-        return mejorValor
+    def minimax(self, nodo, alfa, beta, movimientos_realizados):
+        if nodo.profundidad == 0 or self.juego_terminado(nodo.tablero):
+            return self.evaluar_estado(nodo.profundidad)
 
-    else:
-        mejorValor = float("inf")
-        movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
-        for jugada in movimientos:
-            nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
-            nodo.tablero = nuevoTablero  # Actualizar el estado del tablero
-            nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
-            valor = minimax(nuevoNodo, juego, alfa, beta)
-            mejorValor = min(mejorValor, valor)
-            beta = min(beta, mejorValor)
-            if beta <= alfa:
-                break  # Poda alfa-beta
-        return mejorValor
+        if nodo.jugador == 'Max':
+            mejorValor = float("-inf")
+            movimientos = self.movimientos_posibles(nodo.tablero, nodo.jugador)
+            for jugada in movimientos:
+                if jugada not in movimientos_realizados:
+                    movimientos_realizados.add(jugada)
+                    nuevoTablero = self.realizarJugada(copy.deepcopy(nodo.tablero), jugada, nodo.jugador)
+                    nuevoNodo = Nodo(nuevoTablero, self.oponente(nodo.jugador), nodo.profundidad - 1)
+                    valor = self.minimax(nuevoNodo, alfa, beta, movimientos_realizados)
+                    mejorValor = max(mejorValor, valor)
+                    alfa = max(alfa, mejorValor)
+                    movimientos_realizados.remove(jugada)
+                    if beta <= alfa:
+                        break  # Corte alfa-beta
+            return mejorValor
+        else:
+            peorValor = float("inf")
+            movimientos = self.movimientos_posibles(nodo.tablero, nodo.jugador)
+            for jugada in movimientos:
+                if jugada not in movimientos_realizados:
+                    movimientos_realizados.add(jugada)
+                    nuevoTablero = self.realizarJugada(copy.deepcopy(nodo.tablero), jugada, nodo.jugador)
+                    nuevoNodo = Nodo(nuevoTablero, self.oponente(nodo.jugador), nodo.profundidad - 1)
+                    valor = self.minimax(nuevoNodo, alfa, beta, movimientos_realizados)
+                    peorValor = min(peorValor, valor)
+                    beta = min(beta, peorValor)
+                    movimientos_realizados.remove(jugada)
+                    if beta <= alfa:
+                        break  # Corte alfa-beta
+            return peorValor
 
 def verificar_primer_movimiento_max(tablero, profundidad, jugador):
     juego = Juego()
@@ -250,16 +254,19 @@ def verificar_primer_movimiento_max(tablero, profundidad, jugador):
     alfa = float("-inf")
     beta = float("inf")
     mejor_movimiento = None
+    movimientos_realizados = set()  # Registro de movimientos realizados
 
     for movimiento in movimientos_iniciales:
-        nuevo_tablero = juego.realizarJugada(copy.deepcopy(tablero), movimiento, jugador)  # Actualizar el tablero con el nuevo movimiento
+        movimientos_realizados.add(movimiento)  # Agregar movimiento al registro
+        nuevo_tablero = juego.realizarJugada(copy.deepcopy(tablero), movimiento, jugador)
         nuevo_nodo = Nodo(nuevo_tablero, juego.oponente(jugador), profundidad)
-        utilidad = minimax(nuevo_nodo, juego, alfa, beta)
+        utilidad = juego.minimax(nuevo_nodo, alfa, beta, movimientos_realizados)
         if utilidad > mejor_utilidad:
             mejor_utilidad = utilidad
             mejor_movimiento = movimiento
+        movimientos_realizados.remove(movimiento)  # Eliminar movimiento del registro
 
-    return mejor_movimiento 
+    return mejor_movimiento
 
 # def minimax(nodo, juego, alfa, beta):
 #     if nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero):
