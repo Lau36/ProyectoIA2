@@ -1,8 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from Principiante import Principiante
-from Amateur import Amateur
-from Experto import Experto
+from niveles.Principiante import Principiante
+from niveles.Amateur import Amateur
+from niveles.Experto import Experto
 
 class Ventana_Juego(tk.Toplevel):
     def __init__(self):

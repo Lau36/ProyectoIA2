@@ -210,7 +210,7 @@ class Juego:
             return -float('inf')  # No hay puntos y 'Max' no ha recolectado ninguno
 
         return puntaje_max - puntaje_min + utilidadProfundidad + utilidadDistancia
-    
+
 def minimax(nodo, juego, alfa, beta):
     if nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero):
         return juego.evaluar_estado(nodo.profundidad)
@@ -220,13 +220,13 @@ def minimax(nodo, juego, alfa, beta):
         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
         for jugada in movimientos:
             nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
-            nodo.tablero = nuevoTablero  # Update the board state
+            nodo.tablero = nuevoTablero  # Actualizar el estado del tablero
             nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
             valor = minimax(nuevoNodo, juego, alfa, beta)
             mejorValor = max(mejorValor, valor)
             alfa = max(alfa, mejorValor)
             if beta <= alfa:
-                break  # Alpha-beta pruning
+                break  # Poda alfa-beta
         return mejorValor
 
     else:
@@ -234,13 +234,13 @@ def minimax(nodo, juego, alfa, beta):
         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
         for jugada in movimientos:
             nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
-            nodo.tablero = nuevoTablero  # Update the board state
+            nodo.tablero = nuevoTablero  # Actualizar el estado del tablero
             nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
             valor = minimax(nuevoNodo, juego, alfa, beta)
             mejorValor = min(mejorValor, valor)
             beta = min(beta, mejorValor)
             if beta <= alfa:
-                break  # Alpha-beta pruning
+                break  # Poda alfa-beta
         return mejorValor
 
 def verificar_primer_movimiento_max(tablero, profundidad, jugador):
@@ -252,11 +252,79 @@ def verificar_primer_movimiento_max(tablero, profundidad, jugador):
     mejor_movimiento = None
 
     for movimiento in movimientos_iniciales:
-        nuevo_tablero = juego.realizarJugada(tablero, movimiento, jugador)  # Actualizar el tablero con el nuevo movimiento
+        nuevo_tablero = juego.realizarJugada(copy.deepcopy(tablero), movimiento, jugador)  # Actualizar el tablero con el nuevo movimiento
         nuevo_nodo = Nodo(nuevo_tablero, juego.oponente(jugador), profundidad)
         utilidad = minimax(nuevo_nodo, juego, alfa, beta)
         if utilidad > mejor_utilidad:
             mejor_utilidad = utilidad
             mejor_movimiento = movimiento
 
-    return mejor_movimiento
+    return mejor_movimiento 
+
+# def minimax(nodo, juego, alfa, beta):
+#     if nodo.profundidad == 0 or juego.juego_terminado(nodo.tablero):
+#         return juego.evaluar_estado(nodo.profundidad)
+
+#     if nodo.jugador == 'Max':
+#         mejorValor = float("-inf")
+#         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
+#         for jugada in movimientos:
+#             nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
+#             nodo.tablero = nuevoTablero  # Update the board state
+#             nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
+#             valor = minimax(nuevoNodo, juego, alfa, beta)
+#             mejorValor = max(mejorValor, valor)
+#             alfa = max(alfa, mejorValor)
+#             if beta <= alfa:
+#                 break  # Alpha-beta pruning
+#         return mejorValor
+
+#     else:
+#         mejorValor = float("inf")
+#         movimientos = juego.movimientos_posibles(nodo.tablero, nodo.jugador)
+#         for jugada in movimientos:
+#             nuevoTablero = juego.realizarJugada(nodo.tablero, jugada, nodo.jugador)
+#             nodo.tablero = nuevoTablero  # Update the board state
+#             nuevoNodo = Nodo(nuevoTablero, juego.oponente(nodo.jugador), nodo.profundidad - 1)
+#             valor = minimax(nuevoNodo, juego, alfa, beta)
+#             mejorValor = min(mejorValor, valor)
+#             beta = min(beta, mejorValor)
+#             if beta <= alfa:
+#                 break  # Alpha-beta pruning
+#         return mejorValor
+
+# def verificar_primer_movimiento_max(tablero, profundidad, jugador):
+#     juego = Juego()
+#     movimientos_iniciales = juego.movimientos_posibles(tablero, jugador)
+#     mejor_utilidad = float('-inf')
+#     alfa = float("-inf")
+#     beta = float("inf")
+#     mejor_movimiento = None
+
+#     for movimiento in movimientos_iniciales:
+#         nuevo_tablero = juego.realizarJugada(tablero, movimiento, jugador)  # Actualizar el tablero con el nuevo movimiento
+#         nuevo_nodo = Nodo(nuevo_tablero, juego.oponente(jugador), profundidad)
+#         utilidad = minimax(nuevo_nodo, juego, alfa, beta)
+#         if utilidad > mejor_utilidad:
+#             mejor_utilidad = utilidad
+#             mejor_movimiento = movimiento
+
+#     return mejor_movimiento
+
+# def verificar_primer_movimiento_max(tablero, profundidad, jugador):
+#     juego = Juego()
+#     movimientos_iniciales = juego.movimientos_posibles(tablero, jugador)
+#     mejor_utilidad = float('-inf')
+#     alfa = float("-inf")
+#     beta = float("inf")
+#     mejor_movimiento = None
+
+#     for movimiento in movimientos_iniciales:
+#         nuevo_tablero = juego.realizarJugada(copy.deepcopy(tablero), movimiento, jugador)  # Actualizar el tablero con el nuevo movimiento
+#         nuevo_nodo = Nodo(nuevo_tablero, juego.oponente(jugador), profundidad)
+#         utilidad = minimax(nuevo_nodo, juego, alfa, beta)
+#         if utilidad > mejor_utilidad:
+#             mejor_utilidad = utilidad
+#             mejor_movimiento = movimiento
+
+#     return mejor_movimiento
