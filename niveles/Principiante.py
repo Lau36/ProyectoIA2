@@ -174,7 +174,7 @@ class Principiante(tk.Toplevel):
                     messagebox.showinfo("Juego terminado",
                                         "¡Ganó la IA!")
                     print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
-                    
+                    self.quit()
 
             self.juego.tableroGame = nuevo_tablero
 
@@ -182,7 +182,7 @@ class Principiante(tk.Toplevel):
             print("Tablero nuevo:")
             for fila in nuevo_tablero:
                 print(fila)
-            
+            print()
 
             self.update_scores()  # Actualizar puntuaciones en la interfaz
 
