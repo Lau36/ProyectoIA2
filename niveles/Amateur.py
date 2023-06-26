@@ -11,6 +11,7 @@ class Amateur(tk.Toplevel):
         self.juego = Juego()
         self.profundidad = self.juego.complejidad_juego('amateur')
         self.jugador = 'Max'
+        self.movimientos_realizados = set()  # Registro de movimientos realizados
 
         self.canvas = tk.Canvas(self, width=400, height=400)
         self.canvas.pack()
@@ -94,27 +95,24 @@ class Amateur(tk.Toplevel):
                         print("El juego ha terminado. ¡Es un empate!")
                         messagebox.showinfo(
                             "Juego terminado", "¡Es un empate!")
-                        # print("recorrido de max", self.juego.recorridoMax)
-                        self.quit()
+                        
 
                     elif self.juego.puntajeMin > self.juego.puntajeMax:
                         print("El juego ha terminado. ¡Le ganaste a la IA!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Le ganaste a la IA!")
-                        # print("recorrido de max", self.juego.recorridoMax)
-                        self.quit()
+                        
 
                     elif self.juego.puntajeMin < self.juego.puntajeMax:
                         print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Ganó la IA!")
-                        # print("recorrido de max", self.juego.recorridoMax)
-
-                        self.quit()
+                        
 
                 self.juego.tableroGame = nuevo_tablero
 
                 self.jugador = 'Max'
+                self.movimientos_realizados.add(jugada_min)
                 self.make_move()
 
         elif self.jugador == 'Max':
@@ -132,33 +130,30 @@ class Amateur(tk.Toplevel):
                         print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Ganó la IA!")
-                        # print("recorrido de max", self.juego.recorridoMax)
-                        self.quit()
+                        
 
                     elif self.juego.puntajeMin > self.juego.puntajeMax:
                         print("El juego ha terminado. ¡Le ganaste a la IA!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Le ganaste a la IA!")
-                        # print("recorrido de max", self.juego.recorridoMax)
-                        self.quit()
+                        
 
                     elif self.juego.puntajeMin == self.juego.puntajeMax:
                         print("El juego ha terminado. ¡Es un empate!")
                         messagebox.showinfo(
                             "Juego terminado", "¡Es un empate!")
-                        # print("recorrido de max", self.juego.recorridoMax)
-
-                        self.quit()
+                        
 
                 self.juego.tableroGame = nuevo_tablero
 
                 self.jugador = 'Min'
+                self.movimientos_realizados.add(jugada_max)
                 self.make_move()
 
     def make_initial_move(self):
         self.make_move()
 
-    # Funcioón que muestra las posibles jugadas dibujadas en el tablero de juego
+    # Función que muestra las posibles jugadas dibujadas en el tablero de juego
     def mostrar_posibles_jugadas(self, posibles_jugadas):
         for i, j in posibles_jugadas:
             x = j * 50 + 25
@@ -168,8 +163,9 @@ class Amateur(tk.Toplevel):
 
     def make_move(self):
         if self.jugador == 'Max':
+            movimientos_realizados = self.movimientos_realizados.copy()  # Copia de los movimientos realizados
             mejor_movimiento_max = verificar_primer_movimiento_max(
-                self.juego.tableroGame, self.profundidad, 'Max')
+                self.juego.tableroGame, self.profundidad, 'Max', movimientos_realizados)
             nuevo_tablero = self.juego.realizarJugada(
                 self.juego.tableroGame, mejor_movimiento_max, 'Max')
 
@@ -178,8 +174,7 @@ class Amateur(tk.Toplevel):
                     messagebox.showinfo("Juego terminado",
                                         "¡Ganó la IA!")
                     print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
-                    # print("recorrido de max", self.juego.recorridoMax)
-                    self.quit()
+                    
 
             self.juego.tableroGame = nuevo_tablero
 
@@ -187,7 +182,7 @@ class Amateur(tk.Toplevel):
             print("Tablero nuevo:")
             for fila in nuevo_tablero:
                 print(fila)
-            print()
+            
 
             self.update_scores()  # Actualizar puntuaciones en la interfaz
 
@@ -199,16 +194,15 @@ class Amateur(tk.Toplevel):
         elif self.jugador == 'Min':
             movimientos_posibles_min = self.juego.movimientos_posibles(
                 self.juego.tableroGame, 'Min')
+            movimientos_posibles_min = movimientos_posibles_min - self.movimientos_realizados
             if not movimientos_posibles_min:
                 if self.juego.puntajeMin == self.juego.puntajeMax:
                     print("El juego ha terminado. ¡Es un empate!")
                     messagebox.showinfo("Juego terminado", "¡Es un empate!")
-                    # print("recorrido de max", self.juego.recorridoMax)
                 else:
                     print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
                     messagebox.showinfo("Juego terminado",
                                         "¡Ganó el jugador 'Max'!")
-                    # print("recorrido de max", self.juego.recorridoMax)
-                    self.quit()
+                    
             else:
                 self.make_move()

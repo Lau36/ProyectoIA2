@@ -247,14 +247,13 @@ class Juego:
                         break  # Corte alfa-beta
             return peorValor
 
-def verificar_primer_movimiento_max(tablero, profundidad, jugador):
+def verificar_primer_movimiento_max(tablero, profundidad, jugador, movimientos_realizados):
     juego = Juego()
     movimientos_iniciales = juego.movimientos_posibles(tablero, jugador)
     mejor_utilidad = float('-inf')
     alfa = float("-inf")
     beta = float("inf")
     mejor_movimiento = None
-    movimientos_realizados = set()  # Registro de movimientos realizados
 
     for movimiento in movimientos_iniciales:
         movimientos_realizados.add(movimiento)  # Agregar movimiento al registro
