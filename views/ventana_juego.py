@@ -1,6 +1,8 @@
 import tkinter as tk
 from PIL import Image, ImageTk
-from Principiante import Principiante
+from niveles.Principiante import Principiante
+from niveles.Amateur import Amateur
+from niveles.Experto import Experto
 
 class Ventana_Juego(tk.Toplevel):
     def __init__(self):
@@ -58,19 +60,11 @@ class Ventana_Juego(tk.Toplevel):
         self.botonExperto.pack()
         self.botonExperto.place(x=250, y=350)
 
-    # def nivel(self, nivel):
-    #     if nivel == "1":
-    #         Principiante()
-    #     elif nivel == "2":
-    #         pass
-    #     elif nivel == "3":
-    #         pass
-
     def nivel_uno(self):
         level1 = Principiante()
 
     def nivel_dos(self):
-        pass
+        level1 = Amateur()
 
     def nivel_tres(self):
-        pass
+        level1 = Experto()
