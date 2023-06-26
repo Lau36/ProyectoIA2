@@ -144,10 +144,8 @@ class Juego:
 
     def obtener_puntaje(self, jugador):
         if jugador == 'Max':
-            print("FUN OBT puntaje max",self.puntajeMax)
             return self.puntajeMax
         elif jugador == 'Min':
-            print("FUN OBT puntaje min",self.puntajeMin)
             return self.puntajeMin
 
     def oponente(self, jugador):
@@ -160,18 +158,20 @@ class Juego:
         puntaje_max = self.obtener_puntaje('Max')
         puntaje_min = self.obtener_puntaje('Min')
         utilidad_puntaje = puntaje_max - puntaje_min
-        if profundidad == 1:
-            return utilidad_puntaje *10
+        if profundidad == 0:
+            return utilidad_puntaje *0
+        elif profundidad == 1:
+            return utilidad_puntaje *1
         elif profundidad == 2:
-            return utilidad_puntaje *9
+            return utilidad_puntaje *2
         elif profundidad == 3:
-            return utilidad_puntaje *8
+            return utilidad_puntaje *3
         elif profundidad == 4:
-            return utilidad_puntaje *7
+            return utilidad_puntaje *4
         elif profundidad == 5:
-            return utilidad_puntaje *6        
+            return utilidad_puntaje *5        
         elif profundidad == 6:
-            return utilidad_puntaje *5
+            return utilidad_puntaje *6
         else:
             return utilidad_puntaje
 

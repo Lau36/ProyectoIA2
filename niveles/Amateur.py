@@ -73,12 +73,6 @@ class Amateur(tk.Toplevel):
                         self.canvas.create_text(
                             x + 25, y + 25, text=str(tablero[fila][columna]), font=("Arial", 12))
 
-        # Imprimir el tablero actual en la consola
-        print("Tablero actual:")
-        for fila in tablero:
-            print(fila)
-        print()
-
     def on_click(self, event):
         if self.jugador == 'Min':
             columna = event.x // 50
@@ -92,22 +86,16 @@ class Amateur(tk.Toplevel):
 
                 if self.juego.juego_terminado(nuevo_tablero):
                     if self.juego.puntajeMin == self.juego.puntajeMax:
-                        print("El juego ha terminado. ¡Es un empate!")
                         messagebox.showinfo(
                             "Juego terminado", "¡Es un empate!")
                         
-
                     elif self.juego.puntajeMin > self.juego.puntajeMax:
-                        print("El juego ha terminado. ¡Le ganaste a la IA!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Le ganaste a la IA!")
                         
-
                     elif self.juego.puntajeMin < self.juego.puntajeMax:
-                        print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Ganó la IA!")
-                        
 
                 self.juego.tableroGame = nuevo_tablero
 
@@ -127,23 +115,17 @@ class Amateur(tk.Toplevel):
 
                 if self.juego.juego_terminado(nuevo_tablero):
                     if self.juego.puntajeMax > self.juego.puntajeMin:
-                        print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
                         messagebox.showinfo("Juego terminado",
                                             "¡Ganó la IA!")
                         
-
                     elif self.juego.puntajeMin > self.juego.puntajeMax:
-                        print("El juego ha terminado. ¡Le ganaste a la IA!")
                         messagebox.showinfo("Juego terminado",
-                                            "¡Le ganaste a la IA!")
-                        
+                                            "¡Le ganaste a la IA!")                 
 
                     elif self.juego.puntajeMin == self.juego.puntajeMax:
-                        print("El juego ha terminado. ¡Es un empate!")
                         messagebox.showinfo(
                             "Juego terminado", "¡Es un empate!")
                         
-
                 self.juego.tableroGame = nuevo_tablero
 
                 self.jugador = 'Min'
@@ -173,16 +155,9 @@ class Amateur(tk.Toplevel):
                 if self.juego.puntajeMax > self.juego.puntajeMin:
                     messagebox.showinfo("Juego terminado",
                                         "¡Ganó la IA!")
-                    print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
-                    
-
             self.juego.tableroGame = nuevo_tablero
 
             self.jugador = 'Min'
-            print("Tablero nuevo:")
-            for fila in nuevo_tablero:
-                print(fila)
-            
 
             self.update_scores()  # Actualizar puntuaciones en la interfaz
 
@@ -197,10 +172,8 @@ class Amateur(tk.Toplevel):
             movimientos_posibles_min = movimientos_posibles_min - self.movimientos_realizados
             if not movimientos_posibles_min:
                 if self.juego.puntajeMin == self.juego.puntajeMax:
-                    print("El juego ha terminado. ¡Es un empate!")
                     messagebox.showinfo("Juego terminado", "¡Es un empate!")
                 else:
-                    print("El juego ha terminado. ¡Ganó el jugador 'Max'!")
                     messagebox.showinfo("Juego terminado",
                                         "¡Ganó el jugador 'Max'!")
                     
