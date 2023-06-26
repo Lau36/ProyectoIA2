@@ -161,17 +161,17 @@ class Juego:
         if profundidad == 0:
             return utilidad_puntaje *0
         elif profundidad == 1:
-            return utilidad_puntaje *1
-        elif profundidad == 2:
-            return utilidad_puntaje *2
-        elif profundidad == 3:
-            return utilidad_puntaje *3
-        elif profundidad == 4:
-            return utilidad_puntaje *4
-        elif profundidad == 5:
-            return utilidad_puntaje *5        
-        elif profundidad == 6:
             return utilidad_puntaje *6
+        elif profundidad == 2:
+            return utilidad_puntaje *5
+        elif profundidad == 3:
+            return utilidad_puntaje *4
+        elif profundidad == 4:
+            return utilidad_puntaje *3
+        elif profundidad == 5:
+            return utilidad_puntaje *2        
+        elif profundidad == 6:
+            return utilidad_puntaje *1
         else:
             return utilidad_puntaje
 
