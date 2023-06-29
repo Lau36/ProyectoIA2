@@ -153,67 +153,23 @@ class Juego:
             return 'Min'
         else:
             return 'Max'
-        
-    def utilidad_profundidad(self, profundidad):
-        puntaje_max = self.obtener_puntaje('Max')
-        puntaje_min = self.obtener_puntaje('Min')
-        utilidad_puntaje = puntaje_max - puntaje_min
-        if profundidad == 0:
-            return utilidad_puntaje *0
-        elif profundidad == 1:
-            return utilidad_puntaje *6
-        elif profundidad == 2:
-            return utilidad_puntaje *5
-        elif profundidad == 3:
-            return utilidad_puntaje *4
-        elif profundidad == 4:
-            return utilidad_puntaje *3
-        elif profundidad == 5:
-            return utilidad_puntaje *2        
-        elif profundidad == 6:
-            return utilidad_puntaje *1
-        else:
-            return utilidad_puntaje
 
     def evaluar_estado(self, profundidad):
         puntaje_max = self.obtener_puntaje('Max')
         puntaje_min = self.obtener_puntaje('Min')
-        puntos_disponibles = 0
-        distancia_total = 0
-        puede_tomar_punto = False  # Variable para verificar si 'Max' puede tomar un punto
+        factores = [1, 2, 3, 4, 5, 6]  
+        movimientos_max = len(self.movimientos_posibles(self.tableroGame, 'Max'))
+        movimientos_min = len(self.movimientos_posibles(self.tableroGame, 'Min'))
 
-        for fila in range(8):
-            for columna in range(8):
-                if self.casilla_puntos(self.tableroGame, fila, columna):
-                    puntos_disponibles += 1
-                    distancia = abs(fila - self.posicionJugadorMax[1]) + abs(columna - self.posicionJugadorMax[0])
-                    distancia_total += distancia
-                    puede_tomar_punto = True  # Se encontró al menos un punto disponible
+        # Obtener el factor correspondiente a la profundidad actual
+        factor = factores[-1] if profundidad > len(factores) else factores[profundidad - 1]
 
-        if puede_tomar_punto:
-            return float('inf')  # 'Max' puede tomar un punto, se devuelve infinito
-
-        if puntaje_max == 0 and puntaje_min == 0:
-            return 0  # Ambos jugadores tienen puntaje 0, se considera empate
-
-        if puntaje_max == puntos_disponibles:
-            return float('inf')  # 'Max' ha recolectado todos los puntos
-
-        utilidadProfundidad = self.utilidad_profundidad(profundidad)
-
-        if distancia_total > 0:
-            utilidadDistancia = puntos_disponibles / distancia_total
-        else:
-            utilidadDistancia = puntos_disponibles
-
-        if puntos_disponibles > 0 and (puntaje_max == 0 or puntaje_max != 28):
-            return -float('inf')  # No hay puntos y 'Max' no ha recolectado ninguno
-
-        return puntaje_max - puntaje_min + utilidadProfundidad + utilidadDistancia
+        return (puntaje_max - puntaje_min) *factor + (movimientos_max-movimientos_min)
 
 
     def minimax(self, nodo, alfa, beta, movimientos_realizados):
         if nodo.profundidad == 0 or self.juego_terminado(nodo.tablero):
+            print(self.evaluar_estado(nodo.profundidad))
             return self.evaluar_estado(nodo.profundidad)
 
         if nodo.jugador == 'Max':
